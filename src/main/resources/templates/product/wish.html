@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>위시리스트</title>
+  <style>
+    body {
+      font-family: "맑은 고딕", sans-serif;
+      margin: 20px;
+      background-color: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+      background-color: white;
+    }
+    th { background-color: #f2f2f2; }
+    .btn {
+      padding: 5px 10px;
+      margin: 2px;
+      color: white;
+      border-radius: 3px;
+    }
+    .btn-primary { background-color: #007bff; }
+    .btn-success { background-color: #28a745; }
+    .btn-warning { background-color: #ffc107; color: black; }
+    .btn-danger { background-color: #dc3545; }
+    .header-buttons {
+      text-align: right;
+      margin-bottom: 20px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .register-btn {
+      padding: 8px 16px;
+      margin-left: 10px;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      color: #333;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    .register-btn:hover {
+      background-color: #f8f9fa;
+      border-color: #999;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .pagination a {
+      padding: 8px 16px;
+      margin: 0 4px;
+      text-decoration: none;
+      border: 1px solid #ddd;
+      color: #007bff;
+    }
+
+    .pagination .current {
+      padding: 8px 16px;
+      margin: 0 4px;
+      background-color: #007bff;
+      color: white;
+      border: 1px solid #007bff;
+    }
+  </style>
+</head>
+<body>
+<h1>위시리스트</h1>
+
+<div>
+  <a href="/wishlist/add" class="btn btn-success">위시리스트에 상품 추가</a>
+</div>
+
+<div class="header-buttons" th:if="${token}">
+  <a href="/" class="register-btn">홈으로</a>
+  <a href="/users/mypage" class="register-btn">마이페이지</a>
+  <a href="/api/admin" class="register-btn">관리자 페이지</a>
+  <a href="/users/logout" class="register-btn">로그아웃</a>
+</div>
+
+<div class="header-buttons" th:unless="${token}">
+  <a href="/users/login" class="register-btn">로그인</a>
+  <a href="/users/register" class="register-btn">회원가입</a>
+  <a href="/api/admin" class="register-btn">관리자 페이지</a>
+</div>
+
+<table th:if="${wishes != null && !wishes.isEmpty()}">
+  <thead>
+  <tr>
+    <th>번호</th>
+    <th>상품명</th>
+    <th>가격</th>
+    <th>이미지 주소</th>
+    <th>관리</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${wishes}">
+    <td th:text="${product.id()}">1</td>
+    <td>
+      <a th:href="@{/products/{id}(id=${product.id()})}"
+         th:text="${product.name()}"
+         style="text-decoration: none; color: #007bff;">상품명</a>
+    </td>
+    <td th:text="${#numbers.formatInteger(product.price(), 0, 'COMMA')}">1000</td>
+    <td th:text="${product.imageUrl()}">https://example.com/image.jpg</td>
+    <td>
+      <a th:href="@{/products/{id}(id=${product.id()})}" class="btn btn-primary">상품 보기</a>
+      <a th:href="@{/wishlist/{id}/delete(id=${product.id()})}" class="btn btn-danger"
+         onclick="return confirm('위시리스트에서 삭제하시겠습니까?')">삭제</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+
+<!-- 페이지네이션 -->
+<div class="pagination" th:if="${wishes != null && wishes.totalPages > 1}">
+  <!-- 이전 페이지 -->
+  <a th:if="${wishes.hasPrevious()}"
+     th:href="@{/wishlist(page=${wishes.number - 1}, size=${wishes.size}, sort=${param.sort})}">&laquo; 이전</a>
+
+  <!-- 페이지 번호들 -->
+  <th:block th:each="i : ${#numbers.sequence(0, wishes.totalPages - 1)}">
+    <span th:if="${i == wishes.number}" class="current" th:text="${i + 1}">1</span>
+    <a th:if="${i != wishes.number}"
+       th:href="@{/wishlist(page=${i}, size=${wishes.size}, sort=${param.sort})}"
+       th:text="${i + 1}">1</a>
+  </th:block>
+
+  <!-- 다음 페이지 -->
+  <a th:if="${wishes.hasNext()}"
+     th:href="@{/wishlist(page=${wishes.number + 1}, size=${wishes.size}, sort=${param.sort})}">다음 &raquo;</a>
+</div>
+
+</body>
+</html>
