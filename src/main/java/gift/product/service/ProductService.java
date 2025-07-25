@@ -97,11 +97,4 @@ public class ProductService {
 
     return products.map(ProductResponseDto::from);
   }
-
-  private void validateKaKaoApproval(Long productId) {
-    Product product = findProductByIdOrFail(productId);
-    if (product.getName().contains("카카오") && !product.isKakaoApproval()) {
-      throw new KakaoApprovalException();
-    }
-  }
 }
