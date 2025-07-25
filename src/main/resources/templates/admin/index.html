@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>사용자 관리</title>
+  <style>
+    body {
+      font-family: "맑은 고딕", sans-serif;
+      margin: 20px;
+      background-color: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+      background-color: white;
+    }
+    th { background-color: #f2f2f2; }
+    .btn {
+      padding: 5px 10px;
+      margin: 2px;
+      color: white;
+      border-radius: 3px;
+    }
+    .btn-primary { background-color: #007bff; }
+    .btn-success { background-color: #28a745; }
+    .btn-warning { background-color: #ffc107; color: black; }
+    .btn-danger { background-color: #dc3545; }
+  </style>
+</head>
+<body>
+<h1>사용자 관리</h1>
+
+<div>
+  <a href="/api/admin/users/new" class="btn btn-success">사용자 추가</a>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>번호</th>
+    <th>이메일</th>
+    <th>관리</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id()}">1</td>
+    <td th:text="${user.email()}">email@email.com</td>
+    <td>
+      <a th:href="@{/api/admin/users/{id}(id=${user.id()})}" class="btn btn-primary">조회</a>
+      <a th:href="@{/api/admin/users/{id}/update(id=${user.id()})}" class="btn btn-warning">수정</a>
+      <a th:href="@{/api/admin/users/{id}/delete(id=${user.id()})}" class="btn btn-danger">삭제</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
