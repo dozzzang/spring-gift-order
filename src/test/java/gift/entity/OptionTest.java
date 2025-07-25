@@ -48,6 +48,16 @@ class OptionTest {
   }
 
   @Test
+  void 영_미만_최종수량_예외_발생() {
+    //given
+    Option option = new Option("15인치 골드", 100);
+
+    //when & then
+    assertThatThrownBy(() -> option.subtract(-105))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void 연속적인_재고_차감_정상동작() {
     // given
     Option option = new Option("13인치 스타라이트", 100);
