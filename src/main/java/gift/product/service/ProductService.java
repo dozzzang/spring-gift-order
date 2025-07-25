@@ -31,6 +31,7 @@ public class ProductService {
     return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
   }
 
+  @Transactional(readOnly = true)
   public ProductResponseDto findProductById(Long productId) {
     Product product = findProductByIdOrFail(productId);
     return ProductResponseDto.from(product);
@@ -85,10 +86,12 @@ public class ProductService {
     return ProductResponseDto.from(product);
   }
 
+  @Transactional
   public void deleteProduct(Long productId) {
     productRepository.deleteById(productId);
   }
 
+  @Transactional(readOnly = true)
   public Page<ProductResponseDto> findAllProducts(PageRequestDto pageRequestDto) {
     Sort sortCondition = Sort.by(Direction.DESC, pageRequestDto.sort());
     Pageable pageable = PageRequest.of(pageRequestDto.page(), pageRequestDto.size(), sortCondition);
