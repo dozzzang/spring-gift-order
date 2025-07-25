@@ -5,10 +5,10 @@ import java.util.List;
 
 public class ErrorResponse {
 
-  private String message;
-  private int status;
-  private String code;
-  private List<FieldError> errors;
+  private final String message;
+  private final int status;
+  private final String code;
+  private final List<FieldError> errors;
 
   // 에러코드 객체만 들어왔다면 그 객체를 이용해서 에러응답객체를
   private ErrorResponse(final ErrorCode errorCode) {
