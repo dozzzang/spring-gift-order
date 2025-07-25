@@ -1,4 +1,4 @@
-# spring-gift-product
+# spring-gift-order
 ***
 ## Step 1 : API 명세(RestController)
 | 기능    | Method | URL                       |request|response| 상태코드     |
