@@ -3,6 +3,7 @@ package gift;
 import static gift.user.entity.Role.USER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import gift.auth.service.KakaoService;
 import gift.product.dto.ProductRequestDto;
 import gift.product.dto.ProductResponseDto;
 import gift.product.entity.Product;
@@ -15,14 +16,19 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
 public class WishPageTest {
+
+  @MockitoBean
+  private KakaoService kakaoService;
 
   @Autowired
   private WishRepository wishRepository;

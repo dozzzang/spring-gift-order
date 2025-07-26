@@ -3,6 +3,7 @@ package gift.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gift.auth.service.KakaoService;
 import gift.exception.OverlappingOptionNameException;
 import gift.exception.ProductNotFoundException;
 import gift.option.dto.OptionRequestDto;
@@ -17,6 +18,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -28,6 +30,9 @@ class ProductIntegrationTest {
 
   @Autowired
   private ProductRepository productRepository;
+
+  @MockitoBean
+  private KakaoService kakaoService;
 
   @Test
   void 상품과_옵션_저장() {
