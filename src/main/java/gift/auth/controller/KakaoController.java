@@ -62,7 +62,7 @@ public class KakaoController {
         return "redirect:/";
 
       } catch (Exception e) {
-        return new InternalServerException(INTERNAL_SERVER_ERROR).getMessage();
+        return "redirect:/users/login";
       }
     }
 }
