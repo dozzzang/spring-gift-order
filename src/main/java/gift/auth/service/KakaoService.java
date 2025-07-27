@@ -6,6 +6,7 @@ import gift.auth.dto.KakaoUserInfoDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,7 +27,15 @@ public class KakaoService {
   private final RestClient restClient;
 
   public KakaoService() {
-    this.restClient = RestClient.create();
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+
+    requestFactory.setConnectTimeout(5000);
+    requestFactory.setReadTimeout(5000);
+    requestFactory.setConnectionRequestTimeout(5000);
+
+    this.restClient = RestClient.builder()
+        .requestFactory(requestFactory)
+        .build();
   }
 
   // Step 1: 카카오 로그인 URL 생성 사용자를 카카오 인증 서버로 리다이렉트하기 위한 URL
