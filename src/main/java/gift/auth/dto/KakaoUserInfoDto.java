@@ -9,7 +9,6 @@ public record KakaoUserInfoDto (
   KakaoAccount kakaoAccount
 ) {
 
-  //앱에서 이메일 정보 허용이 불가한 상태
   public String getEmailSafely() {
 
      if(kakaoAccount != null && kakaoAccount.email() != null) {

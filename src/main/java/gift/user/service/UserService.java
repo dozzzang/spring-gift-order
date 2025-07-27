@@ -36,6 +36,17 @@ public class UserService {
   }
 
   @Transactional
+  public String handleKaKaoLogin(String email, String kakaoId) {
+    User user = userRepository.findByEmail(email).orElseGet(
+        () -> {
+          User newUser = new User(email,"reservedPassword" + kakaoId);
+          return userRepository.save(newUser);
+        }
+        );
+    return jwtTokenProvider.generateToken(user);
+  }
+
+  @Transactional
   public void registerUser(RegisterRequestDto registerRequestDto) {
     String encryptedPassword = passwordEncoder.encrypt(registerRequestDto.email(),
         registerRequestDto.password());
