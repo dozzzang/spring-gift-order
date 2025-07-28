@@ -1,5 +1,6 @@
 package gift.auth.controller;
 
+import gift.auth.dto.KakaoLoginUrlResponseDto;
 import gift.auth.service.KakaoService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +23,9 @@ public class KakaoController {
 
   @GetMapping("/kakao/login")
   @ResponseBody
-  public ResponseEntity<Map<String, String>> getKakaoLoginUrl() {
+  public ResponseEntity<KakaoLoginUrlResponseDto> getKakaoLoginUrl() {
     String loginUrl = kakaoService.getKakaoLoginUrl();
-    return ResponseEntity.ok(Map.of("loginUrl", loginUrl));
+    return ResponseEntity.ok(new KakaoLoginUrlResponseDto(loginUrl));
   }
 
   @GetMapping(value = "/", params = "code")
