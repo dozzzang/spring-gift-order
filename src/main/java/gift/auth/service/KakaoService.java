@@ -3,6 +3,10 @@ package gift.auth.service;
 
 import gift.auth.dto.KakaoTokenResponseDto;
 import gift.auth.dto.KakaoUserInfoDto;
+import gift.exception.ErrorCode;
+import gift.exception.KakaoApiErrorException;
+import gift.exception.KakaoClientErrorException;
+import gift.exception.KakaoLoginErrorException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -63,10 +67,10 @@ public class KakaoService {
         .body(body)
         .retrieve()
         .onStatus(HttpStatusCode::is4xxClientError, (request, responseEntity) -> {
-          throw new RuntimeException("토큰 요청 실패 - 4xx 오류. 카카오톡 메시지 전송 권한을 확인하세요.");
+          throw new KakaoClientErrorException();
         })
         .onStatus(HttpStatusCode::is5xxServerError, (request, responseEntity) -> {
-          throw new RuntimeException("카카오 서버 오류 - 5xx 오류");
+          throw new KakaoApiErrorException(ErrorCode.KAKAO_API_ERROR);
         })
         .body(KakaoTokenResponseDto.class);
   }
@@ -77,10 +81,10 @@ public class KakaoService {
         .header("Authorization", "Bearer " + accessToken)
         .retrieve()
         .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-          throw new RuntimeException("사용자 정보 요청 실패 - 4xx 오류");
+          throw new KakaoClientErrorException();
         })
         .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-          throw new RuntimeException("카카오 서버 오류 - 5xx 오류");
+          throw new KakaoLoginErrorException(ErrorCode.KAKAO_LOGIN_ERROR);
         })
         .body(KakaoUserInfoDto.class);
   }
