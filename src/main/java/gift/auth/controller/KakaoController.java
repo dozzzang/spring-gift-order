@@ -1,9 +1,6 @@
 package gift.auth.controller;
 
-import gift.auth.dto.KakaoTokenResponseDto;
-import gift.auth.dto.KakaoUserInfoDto;
 import gift.auth.service.KakaoService;
-import gift.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -17,11 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class KakaoController {
 
   private final KakaoService kakaoService;
-  private final UserService userService;
 
-  public KakaoController(KakaoService kakaoService, UserService userService) {
+  public KakaoController(KakaoService kakaoService) {
     this.kakaoService = kakaoService;
-    this.userService = userService;
   }
 
 
@@ -36,13 +31,7 @@ public class KakaoController {
   public String handleKakaoCallback(@RequestParam String code,
       HttpServletResponse response) {
       try {
-        KakaoTokenResponseDto kakaoTokenResponseDto = kakaoService.getAccessToken(code);
-
-        KakaoUserInfoDto kaKaoUserInfoDto = kakaoService.getUserInfo(
-            kakaoTokenResponseDto.accessToken());
-
-        String jwtToken = userService.handleKaKaoLogin(kaKaoUserInfoDto.getEmailSafely(),
-            kaKaoUserInfoDto.id().toString());
+        String jwtToken = kakaoService.processKakaoLogin(code);
 
         Cookie jwtCookie = new Cookie("accessToken", jwtToken);
         jwtCookie.setHttpOnly(true);
