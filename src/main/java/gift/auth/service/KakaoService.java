@@ -15,18 +15,19 @@ import org.springframework.web.client.RestClient;
 @Service
 public class KakaoService {
 
-  @Value("${kakao.client.id}")
-  private String clientId;
-
-  @Value("${kakao.redirect.url}")
-  private String redirectUrl;
+  private final String clientId;
+  private final String redirectUrl;
 
   private static final String KAKAO_AUTH_URL = "https://kauth.kakao.com";
   private static final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
 
   private final RestClient restClient;
 
-  public KakaoService() {
+  public KakaoService(@Value("${kakao.client.id}") String clientId,
+      @Value("${kakao.redirect.url}") String redirectUrl) {
+    this.clientId = clientId;
+    this.redirectUrl = redirectUrl;
+
     HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 
     requestFactory.setConnectTimeout(5000);
@@ -46,7 +47,6 @@ public class KakaoService {
         "&redirect_uri=" + redirectUrl +
         "&client_id=" + clientId;
   }
-
 
   //Step2: 인가 코드로 액세스 토큰 받기
 
