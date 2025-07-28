@@ -3,6 +3,7 @@ package gift;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import gift.auth.service.KakaoService;
 import gift.product.dto.ProductRequestDto;
 import gift.product.entity.Product;
 import gift.product.repository.ProductRepository;
@@ -16,10 +17,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ProductPageTest {
+
+  @MockitoBean
+  private KakaoService kakaoService;
 
   @Autowired
   private ProductRepository productRepository;

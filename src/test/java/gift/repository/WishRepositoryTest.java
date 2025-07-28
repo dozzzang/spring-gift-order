@@ -8,6 +8,7 @@ import gift.user.entity.User;
 import gift.user.entity.Role;
 import gift.user.repository.UserRepository;
 import gift.wish.entity.Wish;
+import gift.wish.repository.WishRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;

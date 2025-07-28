@@ -60,12 +60,15 @@ public class Option {
     this.quantity = quantity;
   }
 
-  public void subtract(int quantity) {
-    if (quantity <= 0) {
-      throw new IllegalArgumentException("1 이상의 수량만 차감할 수 있습니다.");
+    public void subtract(int quantity) {
+      if (quantity <= 0) {
+        throw new IllegalArgumentException("1 이상의 수량만 차감할 수 있습니다.");
+      }
+      if (this.quantity < quantity) {
+        throw new IllegalStateException("최종 수량은 음수일 수 없습니다.");
+      }
+      this.quantity -= quantity;
     }
-    this.quantity -= quantity;
-  }
 
   protected Option() {
 

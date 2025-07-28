@@ -11,7 +11,7 @@ import gift.user.dto.UserRequestDto;
 import gift.user.dto.UserResponseDto;
 import gift.user.entity.User;
 import gift.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,18 @@ public class UserService {
     return user;
   }
 
+  @Transactional
+  public String handleKaKaoLogin(String email, String kakaoId) {
+    User user = userRepository.findByEmail(email).orElseGet(
+        () -> {
+          User newUser = new User(email,"reservedPassword" + kakaoId);
+          return userRepository.save(newUser);
+        }
+        );
+    return jwtTokenProvider.generateToken(user);
+  }
+
+  @Transactional
   public void registerUser(RegisterRequestDto registerRequestDto) {
     String encryptedPassword = passwordEncoder.encrypt(registerRequestDto.email(),
         registerRequestDto.password());
@@ -42,6 +54,7 @@ public class UserService {
     userRepository.save(user);
   }
 
+  @Transactional
   public LoginResponseDto loginUser(LoginRequestDto loginRequestDto) {
     User user = userRepository.findByEmail(loginRequestDto.email())
         .orElseThrow(UserNotFoundException::new);
@@ -55,12 +68,14 @@ public class UserService {
     return new LoginResponseDto(token);
   }
 
+  @Transactional(readOnly = true)
   public List<UserResponseDto> findAllUsers() {
     return userRepository.findAll().stream()
         .map(UserResponseDto::from)
         .collect(Collectors.toList());
   }
 
+  @Transactional
   public UserResponseDto saveUser(UserRequestDto dto) {
     String encryptedPassword = passwordEncoder.encrypt(dto.email(), dto.password());
     User user = new User(dto.email(), encryptedPassword);
@@ -68,6 +83,7 @@ public class UserService {
     return UserResponseDto.from(savedUser);
   }
 
+  @Transactional(readOnly = true)
   public UserResponseDto findById(Long userId) {
     User user = findByIdOrFail(userId);
     return UserResponseDto.from(user);
@@ -90,15 +106,17 @@ public class UserService {
     return UserResponseDto.from(user);
   }
 
+  @Transactional
   public void deleteUser(Long userId) {
     findByIdOrFail(userId);
     userRepository.deleteById(userId);
   }
 
+  @Transactional
   public User findUserByToken(String token) {
-      String email = jwtTokenProvider.getEmail(token);
-      User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-      return user;
+    String email = jwtTokenProvider.getEmail(token);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    return user;
   }
 
 

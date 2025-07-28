@@ -1,4 +1,4 @@
-# spring-gift-product
+# spring-gift-order
 ***
 ## Step 1 : API 명세(RestController)
 | 기능    | Method | URL                       |request|response| 상태코드     |
@@ -117,3 +117,16 @@
 - 옵션은 수량 증감, 이름 중복 여부 등의 책임을 지니므로 하나의 도메인
 - 특히 상품과 옵션이 1:N 관계를 가질 것이므로 엔티티로 구현
 - 옵션 이름에 관한 규칙은 Bean Validation의 어노테이션을 이용하여 구현
+
+# spring-gift-order
+## Step 1 : 카카오 로그인
+### 요구사항 분석
+- 카카오계정 로그인을 통해 인증 코드를 받는다.
+- 토큰 받기를 통해 액세스 토큰을 추출한다.
+- 앱 키, 인가 코드가 유출되지 않도록 한다.
+- (선택) 인가 코드를 받는 방법이 불편한 경우 카카오 로그인 화면을 구현한다.
+
+## 구현 방향
+- 클라이언트가 없는 상황이므로 REST API를 직접 호출 하여 `http://localhost:8080/?code={AUTHORIZATION_CODE}` 에서 인가 코드를 추출한다.
+- 동기식 HTTP 통신으로 Spring이 제공하는 RestClient HTTP Client 도구를 사용하여 액세스 토큰을 추출한다.
+- 환경변수로 앱 키와 인가 코드를 설정하여 유출을 방지한다.
