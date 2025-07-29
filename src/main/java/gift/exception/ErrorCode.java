@@ -17,6 +17,7 @@ public enum ErrorCode {
   INVALID_PASSWORD("INVALID_PASSWORD","회원가입 비밀번호 형식이 다릅니다.",HttpStatus.BAD_REQUEST),
   QUANTITY_MUST_BE_POSITIVE("QUANTITY_MUST_BE_POSITIVE","1 이상의 수량만 차감할 수 있습니다.",HttpStatus.BAD_REQUEST),
   INSUFFICIENT_STOCK("INSUFFICIENT_STOCK","최종 수량은 음수일 수 없습니다.",HttpStatus.BAD_REQUEST),
+  KAKAO_MESSAGE_ERROR("KAKA_MESSAGE_ERROR","주문은 처리되었으나 메시지 전송에 실패하였습니다.",HttpStatus.BAD_REQUEST),
 
   INVALID_LOGIN("INVALID_LOGIN", "이메일 또는 비밀번호가 일치하지 않습니다.",HttpStatus.FORBIDDEN),
 

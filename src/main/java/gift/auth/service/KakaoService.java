@@ -3,8 +3,10 @@ package gift.auth.service;
 import gift.auth.client.KakaoOauthClient;
 import gift.auth.dto.KakaoTokenResponseDto;
 import gift.auth.dto.KakaoUserInfoDto;
+import gift.auth.util.MessageTemplate;
 import gift.exception.ErrorCode;
 import gift.exception.KakaoLoginErrorException;
+import gift.order.entity.Order;
 import gift.user.JwtTokenProvider;
 import gift.user.entity.User;
 import gift.user.repository.UserRepository;
@@ -18,13 +20,16 @@ public class KakaoService {
   private final KakaoOauthClient kakaoOauthClient;
   private final UserRepository userRepository;
   private final JwtTokenProvider jwtTokenProvider;
+  private final MessageTemplate messageTemplate;
 
   public KakaoService(KakaoOauthClient kakaoOauthClient,
       UserRepository userRepository,
-      JwtTokenProvider jwtTokenProvider) {
+      JwtTokenProvider jwtTokenProvider,
+      MessageTemplate messageTemplate) {
     this.kakaoOauthClient = kakaoOauthClient;
     this.userRepository = userRepository;
     this.jwtTokenProvider = jwtTokenProvider;
+    this.messageTemplate = messageTemplate;
   }
 
   public String getKakaoLoginUrl() {
@@ -58,5 +63,20 @@ public class KakaoService {
     User newUser = new User(email, dummyPassword);
 
     return userRepository.save(newUser);
+  }
+
+
+  public void sendOrderMessage(String accessToken, Order order) {
+    final String orderInfo = String.format(
+        "상품: %s\n수량: %d개\n메시지: %s",
+        order.getOption().getName(),
+        order.getQuantity(),
+        order.getMessage() != null ? order.getMessage() : "없음"
+    );
+
+    final String webUrl = "https://yourapp.com/orders/" + order.getId();
+    final String templateObject = messageTemplate.createOrderMessage(orderInfo, webUrl);
+
+    kakaoOauthClient.sendKakaoTalkMessage(accessToken, templateObject);
   }
 }

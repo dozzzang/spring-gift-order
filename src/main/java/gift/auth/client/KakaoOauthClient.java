@@ -24,6 +24,7 @@ public class KakaoOauthClient {
   private static final String KAKAO_AUTH_URL = "https://kauth.kakao.com";
   private static final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
   private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
+  private static final String KAKAO_MESSAGE_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
   private final RestClient restClient;
 
@@ -83,5 +84,24 @@ public class KakaoOauthClient {
           throw new KakaoApiErrorException(ErrorCode.KAKAO_API_ERROR);
         })
         .body(KakaoUserInfoDto.class);
+  }
+
+  public void sendKakaoTalkMessage(String accessToken,String templateObject) {
+    final MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+    body.add("template_object", templateObject);
+
+    restClient.post()
+        .uri(KAKAO_MESSAGE_URL)
+        .header("Authorization", "Bearer " + accessToken)
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(body)
+        .retrieve()
+        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+          throw new KakaoClientErrorException();
+        })
+        .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+          throw new KakaoApiErrorException(ErrorCode.KAKAO_API_ERROR);
+        })
+        .toBodilessEntity();
   }
 }
