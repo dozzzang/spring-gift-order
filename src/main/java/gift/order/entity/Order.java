@@ -1,9 +1,6 @@
 package gift.order.entity;
 
-import gift.exception.ErrorCode;
-import gift.exception.InsufficientStockException;
 import gift.option.entity.Option;
-import gift.product.entity.Product;
 import gift.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

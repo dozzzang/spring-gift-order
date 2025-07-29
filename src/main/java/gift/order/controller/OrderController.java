@@ -1,12 +1,9 @@
 package gift.order.controller;
 
 import gift.auth.util.AuthUtil;
-import gift.exception.ErrorCode;
-import gift.exception.UnAuthorizationException;
 import gift.order.dto.OrderRequestDto;
 import gift.order.dto.OrderResponseDto;
 import gift.order.service.OrderService;
-import gift.user.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
