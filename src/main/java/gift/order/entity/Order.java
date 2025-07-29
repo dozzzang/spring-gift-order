@@ -58,11 +58,4 @@ public class Order {
   public LocalDateTime getOrderDateTime() { return orderDateTime; }
   public String getMessage() { return message; }
 
-  public void decreaseQuantity(final int amount) {
-    if (this.quantity < amount) {
-      throw new InsufficientStockException(ErrorCode.INSUFFICIENT_STOCK);
-    }
-    this.quantity -= amount;
-  }
-
 }
