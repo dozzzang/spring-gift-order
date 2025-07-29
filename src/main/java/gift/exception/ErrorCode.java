@@ -15,6 +15,8 @@ public enum ErrorCode {
   WISH_ALREADY_EXISTED("WISH_ALREADY_EXISTED","위시리스트가 이미 존재합니다.",HttpStatus.BAD_REQUEST),
   KAKAO_CLIENT_ERROR("KAKAO_CLIENT_ERROR","로그인 요청이 올바른 형식이 아닙니다.",HttpStatus.BAD_REQUEST),
   INVALID_PASSWORD("INVALID_PASSWORD","회원가입 비밀번호 형식이 다릅니다.",HttpStatus.BAD_REQUEST),
+  QUANTITY_MUST_BE_POSITIVE("QUANTITY_MUST_BE_POSITIVE","1 이상의 수량만 차감할 수 있습니다.",HttpStatus.BAD_REQUEST),
+  INSUFFICIENT_STOCK("INSUFFICIENT_STOCK","최종 수량은 음수일 수 없습니다.",HttpStatus.BAD_REQUEST),
 
   INVALID_LOGIN("INVALID_LOGIN", "이메일 또는 비밀번호가 일치하지 않습니다.",HttpStatus.FORBIDDEN),
 

@@ -1,6 +1,9 @@
 package gift.order.entity;
 
+import gift.exception.ErrorCode;
+import gift.exception.InsufficientStockException;
 import gift.option.entity.Option;
+import gift.product.entity.Product;
 import gift.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,4 +57,12 @@ public class Order {
   public int getQuantity() { return quantity; }
   public LocalDateTime getOrderDateTime() { return orderDateTime; }
   public String getMessage() { return message; }
+
+  public void decreaseQuantity(final int amount) {
+    if (this.quantity < amount) {
+      throw new InsufficientStockException(ErrorCode.INSUFFICIENT_STOCK);
+    }
+    this.quantity -= amount;
+  }
+
 }

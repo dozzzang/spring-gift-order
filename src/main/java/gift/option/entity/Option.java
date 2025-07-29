@@ -1,5 +1,7 @@
 package gift.option.entity;
 
+import gift.exception.ErrorCode;
+import gift.exception.InsufficientStockException;
 import gift.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,10 +64,10 @@ public class Option {
 
     public void subtract(int quantity) {
       if (quantity <= 0) {
-        throw new IllegalArgumentException("1 이상의 수량만 차감할 수 있습니다.");
+        throw new InsufficientStockException(ErrorCode.QUANTITY_MUST_BE_POSITIVE);
       }
       if (this.quantity < quantity) {
-        throw new IllegalStateException("최종 수량은 음수일 수 없습니다.");
+        throw new InsufficientStockException(ErrorCode.INSUFFICIENT_STOCK);
       }
       this.quantity -= quantity;
     }
