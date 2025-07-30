@@ -10,7 +10,13 @@ public record KakaoTokenResponseDto(
     String accessToken,
 
     @JsonProperty("expires_in")
-    Integer expiresIn
+    Integer expiresIn,
+
+    @JsonProperty("refresh_token")
+    String refreshToken,
+
+    @JsonProperty("refresh_token_expires_in")
+    Integer refreshTokenExpiresIn
 )
     {
 };

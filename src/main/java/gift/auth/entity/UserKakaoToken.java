@@ -32,4 +32,32 @@ public class UserKakaoToken {
 
   protected UserKakaoToken() {
   }
+
+  public static UserKakaoToken create(User user, String accessToken, String refreshToken,
+      int accessTokenExpiresIn, int refreshTokenExpiresIn) {
+    UserKakaoToken token = new UserKakaoToken();
+    token.userId = user.getId();
+    token.user = user;
+    token.accessToken = accessToken;
+    token.refreshToken = refreshToken;
+    token.accessTokenExpiresAt = Instant.now().plusSeconds(accessTokenExpiresIn);
+    token.refreshTokenExpiresAt = Instant.now().plusSeconds(refreshTokenExpiresIn);
+    return token;
+  }
+
+  public void updateTokens(String newAccessToken, String newRefreshToken,
+      int accessTokenExpiresIn, int refreshTokenExpiresIn) {
+    this.accessToken = newAccessToken;
+    this.refreshToken = newRefreshToken;
+    this.accessTokenExpiresAt = Instant.now().plusSeconds(accessTokenExpiresIn);
+    this.refreshTokenExpiresAt = Instant.now().plusSeconds(refreshTokenExpiresIn);
+  }
+
+  public boolean isAccessTokenExpired() {
+    return Instant.now().isAfter(accessTokenExpiresAt);
+  }
+
+  public boolean isRefreshTokenExpired() {
+    return Instant.now().isAfter(refreshTokenExpiresAt);
+  }
 }

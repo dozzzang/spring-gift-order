@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class KakaoService {
 
+  private final KakaoTokenService kakaoTokenService;
   private final KakaoOauthClient kakaoOauthClient;
   private final UserRepository userRepository;
   private final JwtTokenProvider jwtTokenProvider;
@@ -25,11 +26,13 @@ public class KakaoService {
   public KakaoService(KakaoOauthClient kakaoOauthClient,
       UserRepository userRepository,
       JwtTokenProvider jwtTokenProvider,
-      MessageTemplate messageTemplate) {
+      MessageTemplate messageTemplate,
+      KakaoTokenService kakaoTokenService) {
     this.kakaoOauthClient = kakaoOauthClient;
     this.userRepository = userRepository;
     this.jwtTokenProvider = jwtTokenProvider;
     this.messageTemplate = messageTemplate;
+    this.kakaoTokenService = kakaoTokenService;
   }
 
   public String getKakaoLoginUrl() {
@@ -42,6 +45,9 @@ public class KakaoService {
       KakaoTokenResponseDto tokenResponse = kakaoOauthClient.getAccessToken(authorizationCode);
       KakaoUserInfoDto userInfo = kakaoOauthClient.getUserInfo(tokenResponse.accessToken());
       User user = findOrCreateUser(userInfo);
+
+      kakaoTokenService.saveToken(user, tokenResponse);
+
       return jwtTokenProvider.generateToken(user);
 
     } catch (Exception e) {
