@@ -18,7 +18,6 @@ public enum ErrorCode {
   QUANTITY_MUST_BE_POSITIVE("QUANTITY_MUST_BE_POSITIVE","1 이상의 수량만 차감할 수 있습니다.",HttpStatus.BAD_REQUEST),
   INSUFFICIENT_STOCK("INSUFFICIENT_STOCK","최종 수량은 음수일 수 없습니다.",HttpStatus.BAD_REQUEST),
   KAKAO_MESSAGE_ERROR("KAKA_MESSAGE_ERROR","주문은 처리되었으나 메시지 전송에 실패하였습니다.",HttpStatus.BAD_REQUEST),
-
   INVALID_LOGIN("INVALID_LOGIN", "이메일 또는 비밀번호가 일치하지 않습니다.",HttpStatus.FORBIDDEN),
 
   USER_NOT_FOUND("USER_NOT_FOUND","존재하지 않는 사용자입니다.",HttpStatus.NOT_FOUND),
@@ -27,6 +26,7 @@ public enum ErrorCode {
   OPTION_NOT_FOUND("OPTION_NOT_FOUND","옵션이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
 
   INVALID_JWT("INVALID_JWT","유효하지 않은 토큰입니다.",HttpStatus.UNAUTHORIZED),
+  REAUTHORIZED_REQUIRED_ERROR("REAUTHORIZED_REQUIRED_ERROR","카카오 토큰이 없습니다. 다시 로그인해주세요.",HttpStatus.UNAUTHORIZED),
 
   INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR","내부 서버에서 오류가 발생했습니다.",HttpStatus.INTERNAL_SERVER_ERROR),
   KAKAO_API_ERROR("KAKAO_API_ERROR","카카오 API 요청 중 오류가 발생했습니다.",HttpStatus.INTERNAL_SERVER_ERROR),

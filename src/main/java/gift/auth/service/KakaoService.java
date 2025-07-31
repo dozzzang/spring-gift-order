@@ -72,7 +72,9 @@ public class KakaoService {
   }
 
 
-  public void sendOrderMessage(String accessToken, Order order) {
+  public void sendOrderMessage(Long userId, Order order) {
+    String validAccessToken = kakaoTokenService.getValidAccessToken(userId);
+
     final String orderInfo = String.format(
         "상품: %s\n수량: %d개\n메시지: %s",
         order.getOption().getName(),
@@ -83,6 +85,6 @@ public class KakaoService {
     final String webUrl = "https://yourapp.com/orders/" + order.getId();
     final String templateObject = messageTemplate.createOrderMessage(orderInfo, webUrl);
 
-    kakaoOauthClient.sendKakaoTalkMessage(accessToken, templateObject);
+    kakaoOauthClient.sendKakaoTalkMessage(validAccessToken, templateObject);
   }
 }

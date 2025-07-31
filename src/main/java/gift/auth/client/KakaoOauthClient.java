@@ -104,4 +104,23 @@ public class KakaoOauthClient {
         })
         .toBodilessEntity();
   }
+  public KakaoTokenResponseDto refreshAccessToken(String refreshToken) {
+    MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+    body.add("grant_type", "refresh_token");
+    body.add("client_id", clientId);
+    body.add("refresh_token", refreshToken);
+
+    return restClient.post()
+        .uri(KAKAO_TOKEN_URL)
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(body)
+        .retrieve()
+        .onStatus(HttpStatusCode::is4xxClientError, (request, responseEntity) -> {
+          throw new KakaoClientErrorException();
+        })
+        .onStatus(HttpStatusCode::is5xxServerError, (request, responseEntity) -> {
+          throw new KakaoLoginErrorException(ErrorCode.KAKAO_LOGIN_ERROR);
+        })
+        .body(KakaoTokenResponseDto.class);
+  }
 }
