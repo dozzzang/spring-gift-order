@@ -18,14 +18,13 @@ import org.springframework.web.client.RestClient;
 @Component
 public class KakaoOauthClient {
 
-  private final String clientId;
-  private final String redirectUrl;
-
   private static final String KAKAO_AUTH_URL = "https://kauth.kakao.com";
   private static final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
   private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
   private static final String KAKAO_MESSAGE_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
+  private final String clientId;
+  private final String redirectUrl;
   private final RestClient restClient;
 
   public KakaoOauthClient(@Value("${kakao.client.id}") String clientId,
@@ -86,7 +85,7 @@ public class KakaoOauthClient {
         .body(KakaoUserInfoDto.class);
   }
 
-  public void sendKakaoTalkMessage(String accessToken,String templateObject) {
+  public void sendKakaoTalkMessage(String accessToken, String templateObject) {
     final MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("template_object", templateObject);
 
@@ -104,6 +103,7 @@ public class KakaoOauthClient {
         })
         .toBodilessEntity();
   }
+
   public KakaoTokenResponseDto refreshAccessToken(String refreshToken) {
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", "refresh_token");
