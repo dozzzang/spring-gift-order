@@ -1,4 +1,4 @@
-package config;
+package gift.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,6 +21,6 @@ public class ConfigCors implements WebMvcConfigurer {
             HttpMethod.OPTIONS.name())
             .allowedHeaders("*")
             .exposedHeaders(HttpHeaders.LOCATION)
-            .maxAge(1200);;
+            .maxAge(1200);
   }
 }
