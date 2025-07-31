@@ -44,7 +44,6 @@ public class UserKakaoToken {
   public static UserKakaoToken create(User user, String accessToken, String refreshToken,
       int accessTokenExpiresIn, int refreshTokenExpiresIn) {
     UserKakaoToken token = new UserKakaoToken();
-    token.userId = user.getId();
     token.user = user;
     token.accessToken = accessToken;
     token.refreshToken = refreshToken;
