@@ -3,6 +3,7 @@ package gift.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gift.exception.InsufficientStockException;
 import gift.option.entity.Option;
 import org.junit.jupiter.api.Test;
 
@@ -41,10 +42,10 @@ class OptionTest {
 
     // when & then
     assertThatThrownBy(() -> option.subtract(0))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(InsufficientStockException.class);
 
     assertThatThrownBy(() -> option.subtract(-5))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(InsufficientStockException.class);
   }
 
   @Test
@@ -54,7 +55,7 @@ class OptionTest {
 
     //when & then
     assertThatThrownBy(() -> option.subtract(-105))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(InsufficientStockException.class);
   }
 
   @Test

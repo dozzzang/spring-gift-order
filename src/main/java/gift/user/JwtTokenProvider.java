@@ -80,4 +80,16 @@ public class JwtTokenProvider {
     }
   }
 
+  public Long getUserId(final String token) {
+    try {
+      final Claims claims = jwtParser.parseSignedClaims(token).getPayload();
+      final String subject = claims.getSubject();
+      return Long.valueOf(subject);
+    } catch (JwtException | IllegalArgumentException e) {
+      throw new UnAuthorizationException(ErrorCode.INVALID_JWT);
+    } catch (Exception e) {
+      throw new InternalServerException(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+  }
+
 }

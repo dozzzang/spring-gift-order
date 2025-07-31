@@ -12,19 +12,27 @@ public enum ErrorCode {
   INVALID_IMAGE_URL("INVALID_IMAGE_URL", "이미지 URL이 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
   KAKAO_APPROVAL_REQUIRED("KAKAO_APPROVAL_REQUIRED","카카오 관련 상품명은 MD승인이 필요합니다.",HttpStatus.BAD_REQUEST),
   OPTION_OVERLAPPING("OPTION_OVERAPPING","옵션의 이름이 중복되고 있습니다. 이름은 유일해야 합니다.",HttpStatus.BAD_REQUEST),
-
+  WISH_ALREADY_EXISTED("WISH_ALREADY_EXISTED","위시리스트가 이미 존재합니다.",HttpStatus.BAD_REQUEST),
+  KAKAO_CLIENT_ERROR("KAKAO_CLIENT_ERROR","로그인 요청이 올바른 형식이 아닙니다.",HttpStatus.BAD_REQUEST),
   INVALID_PASSWORD("INVALID_PASSWORD","회원가입 비밀번호 형식이 다릅니다.",HttpStatus.BAD_REQUEST),
+  QUANTITY_MUST_BE_POSITIVE("QUANTITY_MUST_BE_POSITIVE","1 이상의 수량만 차감할 수 있습니다.",HttpStatus.BAD_REQUEST),
+  INSUFFICIENT_STOCK("INSUFFICIENT_STOCK","최종 수량은 음수일 수 없습니다.",HttpStatus.BAD_REQUEST),
+  KAKAO_MESSAGE_ERROR("KAKA_MESSAGE_ERROR","주문은 처리되었으나 메시지 전송에 실패하였습니다.",HttpStatus.BAD_REQUEST),
   INVALID_LOGIN("INVALID_LOGIN", "이메일 또는 비밀번호가 일치하지 않습니다.",HttpStatus.FORBIDDEN),
+
   USER_NOT_FOUND("USER_NOT_FOUND","존재하지 않는 사용자입니다.",HttpStatus.NOT_FOUND),
   PRODUCT_NOT_FOUND("PRODUCT_NOT_FOUND","존재하지 않는 상품입니다.",HttpStatus.NOT_FOUND),
   WISH_NOT_FOUND("WISH_NOT_FOUND","위시리스트가 존재하지 않습니다.",HttpStatus.NOT_FOUND),
   OPTION_NOT_FOUND("OPTION_NOT_FOUND","옵션이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
-
-  WISH_ALREADY_EXISTED("WISH_ALREADY_EXISTED","위시리스트가 이미 존재합니다.",HttpStatus.BAD_REQUEST),
+  ORDER_NOT_FOUND("ORDER_NOT_FOUND","주문이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
 
   INVALID_JWT("INVALID_JWT","유효하지 않은 토큰입니다.",HttpStatus.UNAUTHORIZED),
+  REAUTHORIZED_REQUIRED_ERROR("REAUTHORIZED_REQUIRED_ERROR","카카오 토큰이 없습니다. 다시 로그인해주세요.",HttpStatus.UNAUTHORIZED),
 
-  INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR","내부 서버에서 오류가 발생하였습니다.",HttpStatus.INTERNAL_SERVER_ERROR);
+  INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR","내부 서버에서 오류가 발생했습니다.",HttpStatus.INTERNAL_SERVER_ERROR),
+  KAKAO_API_ERROR("KAKAO_API_ERROR","카카오 API 요청 중 오류가 발생했습니다.",HttpStatus.INTERNAL_SERVER_ERROR),
+  KAKAO_LOGIN_ERROR("KAKAO_LOGIN_ERROR","카카오 로그인 중 오류가 발생했습니다.",HttpStatus.INTERNAL_SERVER_ERROR);
+
 
   private final String code;
   private final String message;
