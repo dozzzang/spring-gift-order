@@ -55,6 +55,12 @@ public class OrderService {
     Order order = new Order(user, option, request.quantity(), request.message());
     Order savedOrder = orderRepository.save(order);
 
+    try {
+      kakaoService.sendOrderMessage(userId, savedOrder);
+    } catch (Exception e) {
+      System.err.println("카카오 메시지 전송 실패: " + e.getMessage());
+    }
+
     return OrderResponseDto.from(savedOrder);
   }
 
