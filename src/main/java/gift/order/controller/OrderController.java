@@ -34,6 +34,11 @@ public class OrderController {
     Long userId = authUtil.getUserIdFromRequest(httpRequest);
     OrderResponseDto response = orderService.createOrder(userId, request);
 
+    try {
+      orderService.sendKakaoMessage(userId, response.id());
+    } catch (Exception e) {
+      System.err.println("카카오 메시지 전송 실패: " + e.getMessage());
+    }
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 

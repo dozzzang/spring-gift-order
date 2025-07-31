@@ -24,6 +24,7 @@ public enum ErrorCode {
   PRODUCT_NOT_FOUND("PRODUCT_NOT_FOUND","존재하지 않는 상품입니다.",HttpStatus.NOT_FOUND),
   WISH_NOT_FOUND("WISH_NOT_FOUND","위시리스트가 존재하지 않습니다.",HttpStatus.NOT_FOUND),
   OPTION_NOT_FOUND("OPTION_NOT_FOUND","옵션이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
+  ORDER_NOT_FOUND("ORDER_NOT_FOUND","주문이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
 
   INVALID_JWT("INVALID_JWT","유효하지 않은 토큰입니다.",HttpStatus.UNAUTHORIZED),
   REAUTHORIZED_REQUIRED_ERROR("REAUTHORIZED_REQUIRED_ERROR","카카오 토큰이 없습니다. 다시 로그인해주세요.",HttpStatus.UNAUTHORIZED),

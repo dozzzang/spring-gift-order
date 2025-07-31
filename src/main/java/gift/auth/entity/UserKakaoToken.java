@@ -30,6 +30,10 @@ public class UserKakaoToken {
   @JoinColumn(name = "user_id")
   private User user;
 
+  public String getRefreshToken() {
+    return refreshToken;
+  }
+
   public String getAccessToken() {
     return accessToken;
   }
