@@ -6,6 +6,7 @@ import gift.exception.ErrorCode;
 import gift.exception.KakaoApiErrorException;
 import gift.exception.KakaoClientErrorException;
 import gift.exception.KakaoLoginErrorException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class KakaoOauthClient {
@@ -43,11 +45,17 @@ public class KakaoOauthClient {
   }
 
   public String getKakaoLoginUrl() {
-    return KAKAO_AUTH_URL + "/oauth/authorize" +
-        "?scope=talk_message,account_email" +
-        "&response_type=code" +
-        "&redirect_uri=" + redirectUrl +
-        "&client_id=" + clientId;
+    List<String> scopes = List.of("talk_message", "account_email");
+
+    return UriComponentsBuilder
+        .fromUriString(KAKAO_AUTH_URL)
+        .path("/oauth/authorize")
+        .queryParam("scope", String.join(",", scopes))
+        .queryParam("response_type", "code")
+        .queryParam("redirect_uri", redirectUrl)
+        .queryParam("client_id", clientId)
+        .encode()
+        .toUriString();
   }
 
   public KakaoTokenResponseDto getAccessToken(String authorizationCode) {
