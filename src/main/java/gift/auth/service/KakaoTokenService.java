@@ -7,6 +7,8 @@ import gift.auth.repository.UserKakaoTokenRepository;
 import gift.exception.ErrorCode;
 import gift.exception.ReauthorizeRequiredException;
 import gift.user.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class KakaoTokenService {
 
+  private static final Logger log = LoggerFactory.getLogger(KakaoTokenService.class);
   private final UserKakaoTokenRepository userKakaoTokenRepository;
   private final KakaoOauthClient kakaoOauthClient;
 
   public KakaoTokenService(UserKakaoTokenRepository userKakaoTokenRepository
-  , KakaoOauthClient kakaoOauthClient) {
+      , KakaoOauthClient kakaoOauthClient) {
     this.userKakaoTokenRepository = userKakaoTokenRepository;
     this.kakaoOauthClient = kakaoOauthClient;
   }
@@ -32,7 +35,8 @@ public class KakaoTokenService {
         );
   }
 
-  private void updateExistingToken(UserKakaoToken existingToken, KakaoTokenResponseDto tokenResponse) {
+  private void updateExistingToken(UserKakaoToken existingToken,
+      KakaoTokenResponseDto tokenResponse) {
     existingToken.updateTokens(
         tokenResponse.accessToken(),
         tokenResponse.refreshToken(),
@@ -62,6 +66,9 @@ public class KakaoTokenService {
     }
 
     if (token.isRefreshTokenExpired()) {
+      log.error("리프레시 토큰 만료로 재인증 필요 userId: {}",
+          userId);
+
       throw new ReauthorizeRequiredException(ErrorCode.REAUTHORIZED_REQUIRED_ERROR);
     }
 
@@ -70,18 +77,23 @@ public class KakaoTokenService {
 
   private String refreshAndReturnAccessToken(UserKakaoToken token) {
     try {
-      KakaoTokenResponseDto refreshResponse = kakaoOauthClient.refreshAccessToken(token.getRefreshToken());
+      KakaoTokenResponseDto refreshResponse = kakaoOauthClient.refreshAccessToken(
+          token.getRefreshToken());
 
       token.updateTokens(
           refreshResponse.accessToken(),
-          refreshResponse.refreshToken() != null ? refreshResponse.refreshToken() : token.getRefreshToken(),
+          refreshResponse.refreshToken() != null ? refreshResponse.refreshToken()
+              : token.getRefreshToken(),
           refreshResponse.expiresIn(),
-          refreshResponse.refreshTokenExpiresIn() != null ? refreshResponse.refreshTokenExpiresIn() : 86400 * 30 // 기본값 30일
+          refreshResponse.refreshTokenExpiresIn() != null ? refreshResponse.refreshTokenExpiresIn()
+              : 86400 * 30 // 기본값 30일
       );
 
       return refreshResponse.accessToken();
 
     } catch (Exception e) {
+      log.error("카카오 메시지 발송 중 예상치 못한 에러 발생 error: {}",
+          e.getMessage(), e);
       throw new ReauthorizeRequiredException(ErrorCode.REAUTHORIZED_REQUIRED_ERROR);
     }
   }

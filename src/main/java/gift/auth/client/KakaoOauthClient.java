@@ -7,6 +7,8 @@ import gift.exception.KakaoApiErrorException;
 import gift.exception.KakaoClientErrorException;
 import gift.exception.KakaoLoginErrorException;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ public class KakaoOauthClient {
   private static final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
   private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
   private static final String KAKAO_MESSAGE_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
+  private static final Logger log = LoggerFactory.getLogger(KakaoOauthClient.class);
 
   private final String clientId;
   private final String redirectUrl;
@@ -112,12 +115,18 @@ public class KakaoOauthClient {
 
     RestClient.ResponseSpec responseSpec = requestSpec.retrieve()
         .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+          log.error("카카오 토큰 요청실패로 4xx 에러 발생 상태 : {} Url : {}",
+              response.getStatusCode(),url);
           throw new KakaoClientErrorException();
         })
         .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
           if (serverErrorCode == ErrorCode.KAKAO_LOGIN_ERROR) {
+            log.error("카카오 로그인 실패로 5xx 에러 발생 상태 : {}, Url : {}",
+                response.getStatusCode(),url);
             throw new KakaoLoginErrorException(serverErrorCode);
           } else {
+            log.error("카카오 API 서버 에러 발생 상태 : {}, Url : {}",
+                response.getStatusCode(), url);
             throw new KakaoApiErrorException(serverErrorCode);
           }
         });

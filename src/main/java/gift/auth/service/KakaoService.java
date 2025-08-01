@@ -10,6 +10,8 @@ import gift.order.entity.Order;
 import gift.user.JwtTokenProvider;
 import gift.user.entity.User;
 import gift.user.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class KakaoService {
 
+  private static final Logger log = LoggerFactory.getLogger(KakaoService.class);
   private final KakaoTokenService kakaoTokenService;
   private final KakaoOauthClient kakaoOauthClient;
   private final UserRepository userRepository;
@@ -51,6 +54,8 @@ public class KakaoService {
       return jwtTokenProvider.generateToken(user);
 
     } catch (Exception e) {
+      log.error("카카오 로그인 실패로 5xx 에러 발생 상태 : {}",
+          e.getMessage());
       throw new KakaoLoginErrorException(ErrorCode.KAKAO_LOGIN_ERROR);
     }
   }
