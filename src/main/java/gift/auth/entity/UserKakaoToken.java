@@ -43,12 +43,13 @@ public class UserKakaoToken {
 
   public static UserKakaoToken create(User user, String accessToken, String refreshToken,
       int accessTokenExpiresIn, int refreshTokenExpiresIn) {
+    Instant now = Instant.now();
     UserKakaoToken token = new UserKakaoToken();
     token.user = user;
     token.accessToken = accessToken;
     token.refreshToken = refreshToken;
-    token.accessTokenExpiresAt = Instant.now().plusSeconds(accessTokenExpiresIn);
-    token.refreshTokenExpiresAt = Instant.now().plusSeconds(refreshTokenExpiresIn);
+    token.accessTokenExpiresAt = now.plusSeconds(accessTokenExpiresIn);
+    token.refreshTokenExpiresAt = now.plusSeconds(refreshTokenExpiresIn);
     return token;
   }
 
