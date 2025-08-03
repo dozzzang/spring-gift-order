@@ -10,6 +10,7 @@ if [[ -z "${KAKAO_CLIENT_ID}" || -z "${KAKAO_CLIENT_SECRET}" ]]; then
 fi
 sudo nohup java -jar \
     -Dserver.port=8080 \
+    -Dkakao.redirect.url=http://13.124.50.121 \
     -DKAKAO_CLIENT_ID="${KAKAO_CLIENT_ID}" \
     -DKAKAO_SECRET_KEY="${KAKAO_CLIENT_SECRET}" \
     /home/ubuntu/spring-gift-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
