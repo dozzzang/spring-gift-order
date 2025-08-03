@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class KakaoTokenService {
 
+  private static final int SECONDS_PER_DAY = 86400;
+  private static final int ONE_MONTH = SECONDS_PER_DAY * 30;
   private static final Logger log = LoggerFactory.getLogger(KakaoTokenService.class);
   private final UserKakaoTokenRepository userKakaoTokenRepository;
   private final KakaoOauthClient kakaoOauthClient;
@@ -86,7 +88,7 @@ public class KakaoTokenService {
               : token.getRefreshToken(),
           refreshResponse.expiresIn(),
           refreshResponse.refreshTokenExpiresIn() != null ? refreshResponse.refreshTokenExpiresIn()
-              : 86400 * 30 // 기본값 30일
+              : ONE_MONTH // 기본값 30일
       );
 
       return refreshResponse.accessToken();
