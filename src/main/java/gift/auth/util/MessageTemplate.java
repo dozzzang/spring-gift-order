@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageTemplate {
 
-  private static final Logger log = LoggerFactory.getLogger(MessageTemplate.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MessageTemplate.class);
   private final ObjectMapper objectMapper;
 
   public MessageTemplate(final ObjectMapper objectMapper) {
@@ -33,7 +33,7 @@ public class MessageTemplate {
       );
       return objectMapper.writeValueAsString(template);
     } catch (JsonProcessingException e) {
-      log.error("카카오 메시지 템플릿 JSON 변환 실패 에러: {}",
+      LOG.error("카카오 메시지 템플릿 JSON 변환 실패 에러: {}",
        e.getMessage(), e);
       throw new KakaoMessageTemplateException(ErrorCode.KAKAO_MESSAGE_ERROR);
     }
